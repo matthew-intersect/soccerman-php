@@ -1,6 +1,6 @@
 <?php
  
-class DB_Functions {
+class UserFunctions {
  
     private $db;
  

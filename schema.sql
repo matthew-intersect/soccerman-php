@@ -29,3 +29,19 @@ create table teams (
     constraint team_created_by_fk foreign key (created_by)
         references users(id)
 );
+
+
+---
+--- Matches
+---
+create table matches (
+    id int primary key auto_increment,
+    team int not null,
+    opponent varchar(50) not null,
+    home_away varchar(4) not null,
+    comp_round int,
+    game_time datetime,
+    location varchar(50),
+    constraint match_team_fk foreign key (team)
+        references matches(id)
+);

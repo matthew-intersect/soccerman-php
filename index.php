@@ -14,8 +14,10 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
     $tag = $_POST['tag'];
  
     // include db handler
-    require_once 'include/DB_Functions.php';
-    $db = new DB_Functions();
+    require_once 'user_functions.php';
+    require_once 'team_functions.php';
+    $db = new UserFunctions();
+    $db2 = new TeamFunctions();
  
     // response Array
     $response = array("tag" => $tag, "success" => 0, "error" => 0);
@@ -76,7 +78,36 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
                 echo json_encode($response);
             }
         }
-    } else {
+    } else if ($tag == 'add_team') {
+        $name = $_POST['name'];
+        $created_by = $_POST['created_by'];
+        
+        // check team doesnt already exist
+        if ($db2->teamNameExists($name)) {
+            // team name is already taken - error response
+            $response["error"] = 1;
+            $response["error_msg"] = "Team name already taken";
+            echo json_encode($response);
+        } else {
+            $team = $db2->storeTeam($name, $created_by);
+            if ($team) {
+                // team stored successfully
+                $response["success"] = 1;
+                $response["id"] = $team["id"];
+                $response["team"]["name"] = $team["name"];
+                $response["team"]["code"] = $team["code"];
+                $response["team"]["creator"] = $team["created_by"];
+                $response["team"]["created_at"] = $team["created_at"];
+                echo json_encode($response);
+            } else {
+                // failure in storing team
+                $response["error"] = 2;
+                $response["error_msg"] = "Error occurred while adding team";
+                echo json_encode($response);
+            }
+        }
+    }
+    else {
         echo "Invalid Request";
     }
 } else {
