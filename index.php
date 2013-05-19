@@ -137,6 +137,10 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
                 echo json_encode($response);
             }
         }
+    } else if ($tag == 'players_teams') {
+        $player = $_POST['player'];
+        $teams = $db2->getPlayersTeams($response, $player);
+        echo json_encode($teams);
     }
     else {
         echo "Invalid Request";
