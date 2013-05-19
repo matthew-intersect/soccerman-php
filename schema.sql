@@ -7,7 +7,6 @@ use android_api
 ---
 create table users (
     id int primary key auto_increment,
-    unique_id varchar(23) not null unique,
     name varchar(50) not null,
     email varchar(100) not null unique,
     encrypted_password varchar(80) not null,
@@ -27,6 +26,20 @@ create table teams (
     created_by int not null,
     created_at datetime,
     constraint team_created_by_fk foreign key (created_by)
+        references users(id)
+);
+
+
+---
+--- Team Players
+---
+create table team_players (
+    team_id int not null,
+    player_id int not null,
+    constraint team_players_pk primary key (team_id, player_id),
+    constraint team_id_fk foreign key (team_id)
+        references teams(id),
+    constraint player_id_fk foreign key (player_id)
         references users(id)
 );
 

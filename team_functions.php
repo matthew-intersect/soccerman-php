@@ -40,6 +40,35 @@ class TeamFunctions {
         }
     }
     
+    /**
+     * Adds player to team
+     */
+    public function joinTeam($code, $player) {
+        $team = $this->getTeamIdFromCode($code);
+        $result = mysql_query("INSERT INTO team_players(team_id, player_id) VALUES('$team', '$player')");
+        if ($result) {
+            $result = mysql_query("SELECT * FROM team_players WHERE team_id = $team AND player_id = $player");
+            return mysql_fetch_array($result);
+        } else {
+            return false;
+        }
+    }
+    
+    public function playerInTeam($team, $player) {
+        $result = mysql_query("SELECT * from team_players WHERE team_id = '$team' AND player_id = '$player'");
+        $no_of_rows = mysql_num_rows($result);
+        if ($no_of_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function getTeamIdFromCode($code) {
+        $result = mysql_query("SELECT id from teams WHERE code = '$code'");
+        $row = mysql_fetch_array($result);
+        return $row['id'];
+    }
     
     /**
      * Check whether team name exists or not

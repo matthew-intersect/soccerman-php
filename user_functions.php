@@ -23,16 +23,15 @@ class UserFunctions {
      * returns user details
      */
     public function storeUser($name, $email, $password) {
-        $uuid = uniqid('', true);
         $hash = $this->hashSSHA($password);
         $encrypted_password = $hash["encrypted"]; // encrypted password
         $salt = $hash["salt"]; // salt
-        $result = mysql_query("INSERT INTO users(unique_id, name, email, encrypted_password, salt, created_at) VALUES('$uuid', '$name', '$email', '$encrypted_password', '$salt', NOW())");
+        $result = mysql_query("INSERT INTO users(name, email, encrypted_password, salt, created_at) VALUES('$name', '$email', '$encrypted_password', '$salt', NOW())");
         // check for successful store
         if ($result) {
             // get user details 
-            $uid = mysql_insert_id(); // last inserted id
-            $result = mysql_query("SELECT * FROM users WHERE uid = $uid");
+            $id = mysql_insert_id(); // last inserted id
+            $result = mysql_query("SELECT * FROM users WHERE id = $id");
             // return user details
             return mysql_fetch_array($result);
         } else {

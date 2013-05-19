@@ -34,7 +34,7 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
             // user found
             // echo json with success = 1
             $response["success"] = 1;
-            $response["uid"] = $user["unique_id"];
+            $response["id"] = $user["id"];
             $response["user"]["name"] = $user["name"];
             $response["user"]["email"] = $user["email"];
             $response["user"]["created_at"] = $user["created_at"];
@@ -65,7 +65,7 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
             if ($user) {
                 // user stored successfully
                 $response["success"] = 1;
-                $response["uid"] = $user["unique_id"];
+                $response["id"] = $user["id"];
                 $response["user"]["name"] = $user["name"];
                 $response["user"]["email"] = $user["email"];
                 $response["user"]["created_at"] = $user["created_at"];
@@ -103,6 +103,37 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
                 // failure in storing team
                 $response["error"] = 2;
                 $response["error_msg"] = "Error occurred while adding team";
+                echo json_encode($response);
+            }
+        }
+    } else if ($tag == 'join_team') {
+        $code = $_POST['code'];
+        $player = $_POST['player'];
+        
+        if (!$db2->codeExists($code)) {
+            // team code doesnt exist - error response
+            $response["error"] = 1;
+            $response["error_msg"] = "Team with entered code doesn't exist";
+            echo json_encode($response);
+        }
+        else if ($db2->playerInTeam($team, $player)) {
+            // player already in team - error response
+            $response["error"] = 2;
+            $response["error_msg"] = "Player already in team";
+            echo json_encode($response);
+        }
+        else {
+            $team_player = $db2->joinTeam($code, $player);
+            if ($team_player) {
+                // player joined successfully
+                $response["success"] = 1;
+                $response["team_id"] = $team_player["team_id"];
+                $response["player_id"] = $team_player["player_id"];
+                echo json_encode($response);
+            } else {
+                // failure in joining player to team
+                $response["error"] = 3;
+                $response["error_msg"] = "Error occurred while adding player to team";
                 echo json_encode($response);
             }
         }
