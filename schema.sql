@@ -51,10 +51,10 @@ create table matches (
     id int primary key auto_increment,
     team int not null,
     opponent varchar(50) not null,
-    home_away varchar(4) not null,
+    home_away varchar(4),
     comp_round int,
-    game_time datetime,
+    game_time long,
     location varchar(50),
     constraint match_team_fk foreign key (team)
-        references matches(id)
+        references teams(id)
 );
