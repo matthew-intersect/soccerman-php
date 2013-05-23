@@ -54,12 +54,25 @@ class MatchFunctions {
      * Adds player's attendance to a match
      */
     public function addAttendance($player, $match, $attend) {
-        $result = mysql_query("INSERT INTO attendance(player_id, match_id, attendance) VALUES('$player', '$match', '$attend')");
-        if ($result) {
-            return true;
+        $result = mysql_query("SELECT * FROM attendance WHERE player_id = $player and match_id = $match");
+        $no_of_rows = mysql_num_rows($result);
+        if ($no_of_rows > 0) { // update required rather than add
+            $update = mysql_query("UPDATE attendance SET attendance = $attend WHERE player_id = $player and match_id = $match");
+            if ($update) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
         else {
-            return false;
+            $add = mysql_query("INSERT INTO attendance(player_id, match_id, attendance) VALUES('$player', '$match', '$attend')");
+            if ($add) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 }
