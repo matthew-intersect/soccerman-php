@@ -49,6 +49,19 @@ class MatchFunctions {
         }
         return $res;
     }
+    
+    /**
+     * Adds player's attendance to a match
+     */
+    public function addAttendance($player, $match, $attend) {
+        $result = mysql_query("INSERT INTO attendance(player_id, match_id, attendance) VALUES('$player', '$match', '$attend')");
+        if ($result) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
 
 ?>

@@ -37,6 +37,22 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
         $matches = $db->getMatches($team);
         echo json_encode($matches);
     }
+    else if ($tag == 'add_attendance') {
+        $player = $_POST['player'];
+        $match = $_POST['match'];
+        $attend = $_POST['attend'];
+        
+        $attendance = $db->addAttendance($player, $match, $attend);
+        if ($attendance) {
+            $response["success"] = 1;
+            echo json_encode($response);
+        }
+        else {
+            $response["error"] = 1;
+            $response["error_msg"] = "Error occurred while adding attendance";
+            echo json_encode($response);
+        }
+    }
     else {
         echo "Invalid Request";
     }

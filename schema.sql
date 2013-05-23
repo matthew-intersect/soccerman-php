@@ -58,3 +58,19 @@ create table matches (
     constraint match_team_fk foreign key (team)
         references teams(id)
 );
+
+
+---
+--- Attendance
+---
+create table attendance (
+    player_id int not null,
+    match_id int not null,
+    attendance int,
+    reason varchar(100),
+    constraint attendance_pk primary key (player_id, match_id),
+    constraint player_id_fk foreign key (player_id)
+        references users(id),
+    constraint match_id_fk foreign key (match_id)
+        references matches(id)
+);
