@@ -32,6 +32,23 @@ class MatchFunctions {
             return false;
         }
     }
+    
+    /**
+     * Gets all matches for a team
+     */
+    public function getMatches($team) {
+        $result = mysql_query("SELECT * FROM matches WHERE team = $team");
+        if ($result) {
+            while ($row = mysql_fetch_array($result)) {
+                $res['matches'][] = array('id' => $row['id'], 'team' => $row['team'], 'opponent' => $row['opponent'], 
+                        'venue' => $row['location'], 'time' => $row['game_time']);
+            }
+        }
+        if (mysql_num_rows($result) > 0) {
+            $res['success'] = 1;
+        }
+        return $res;
+    }
 }
 
 ?>

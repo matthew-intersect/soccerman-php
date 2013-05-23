@@ -21,16 +21,21 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
         if ($match) {
             $response["success"] = 1;
             $response["match"]["id"] = $match["id"];
-            $response["match"]["team"] = $match["team_id"];
+            $response["match"]["team"] = $match["team"];
             $response["match"]["opponent"] = $match["opponent"];
-            $response["match"]["venue"] = $match["venue"];
-            $response["match"]["time"] = $match["time"];
+            $response["match"]["venue"] = $match["location"];
+            $response["match"]["time"] = $match["game_time"];
             echo json_encode($response);
         } else {
             $response["error"] = 1;
             $response["error_msg"] = "Error occurred while adding match";
             echo json_encode($response);
         }
+    }
+    else if ($tag == 'get_matches') {
+        $team = $_POST['team'];
+        $matches = $db->getMatches($team);
+        echo json_encode($matches);
     }
     else {
         echo "Invalid Request";
