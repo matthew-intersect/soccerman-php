@@ -53,6 +53,11 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
             echo json_encode($response);
         }
     }
+    else if ($tag == 'get_attendance') {
+        $match = $_POST['match'];
+        $attendance = $db->getAttendance($response, $match);
+        echo json_encode($attendance);
+    }
     else {
         echo "Invalid Request";
     }

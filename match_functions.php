@@ -75,6 +75,33 @@ class MatchFunctions {
             }
         }
     }
+    
+    /**
+     * Gets all the player attendances for a match
+     */
+     public function getAttendance($res, $match) {
+        $team = mysql_result(mysql_query("SELECT team FROM matches WHERE id = $match"),0);
+        $players = mysql_query("SELECT users.id, users.name FROM users INNER JOIN team_players ON users.id=team_players.player_id WHERE team_players.team_id = $team");
+        
+        if ($players) {
+            while ($row = mysql_fetch_array($players)) {
+                $idd = $row['id'];
+                $attendance = mysql_query("SELECT * FROM attendance WHERE player_id = $idd and match_id = $match");
+                $no_of_rows = mysql_num_rows($attendance);
+                if ($no_of_rows > 0) {
+                    $attend_response = mysql_fetch_array($attendance);
+                    $res['attendances'][] = array('player_id' => $row['id'], 'player_name' => $row['name'], 'attendance' => $attend_response['attendance']);
+                }
+                else {
+                    $res['attendances'][] = array('player_id' => $row['id'], 'player_name' => $row['name'], 'attendance' => -1);
+                }
+            }
+        }
+        if (mysql_num_rows($players) > 0) {
+            $res['success'] = 1;
+        }
+        return $res;
+    }
 }
 
 ?>
