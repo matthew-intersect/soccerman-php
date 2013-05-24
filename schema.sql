@@ -24,6 +24,7 @@ create table teams (
     name varchar(50) not null,
     code varchar(6) not null unique,
     created_by int not null,
+    player_manager int not null,
     created_at datetime,
     constraint team_created_by_fk foreign key (created_by)
         references users(id)

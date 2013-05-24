@@ -22,19 +22,24 @@ class TeamFunctions {
      * Storing new team
      * returns team details
      */
-    public function storeTeam($name, $created_by) {
+    public function storeTeam($name, $created_by, $player_manager) {
         $code = substr(uniqid(rand(10,1000),false),rand(0,10),6);
         while($this->codeExists($code)) {
             $code = substr(uniqid(rand(10,1000),false),rand(0,10),6);
         }
-        $result = mysql_query("INSERT INTO teams(name, code, created_by, created_at) VALUES('$name', '$code', '$created_by', NOW())");
+        $result = mysql_query("INSERT INTO teams(name, code, created_by, player_manager, created_at) VALUES('$name', '$code', '$created_by', '$player_manager', NOW())");
         // check for successful store
         if ($result) {
             // get team details 
             $id = mysql_insert_id(); // last inserted id
             $result = mysql_query("SELECT * FROM teams WHERE id = $id");
             // return team details
-            return mysql_fetch_array($result);
+            $row = mysql_fetch_array($result);
+            if ($player_manager == 1) {
+                $team = $row['id'];
+                mysql_query("INSERT INTO team_players(team_id, player_id) VALUES('$team', '$created_by')");
+            }
+            return $row;
         } else {
             return false;
         }
@@ -58,8 +63,8 @@ class TeamFunctions {
      * Gets all teams of a player
      */
     public function getPlayersTeams($res, $player) {
-        $result = mysql_query("SELECT teams.id, teams.name, users.name as 'manager' FROM teams INNER JOIN team_players ON teams.id=team_players.team_id
-        INNER JOIN users on team_players.player_id = users.id WHERE team_players.player_id = $player OR teams.created_by = $player");
+        $result = mysql_query("SELECT teams.id, teams.name, users.name as 'manager' FROM teams LEFT JOIN team_players ON teams.id=team_players.team_id
+        INNER JOIN users on teams.created_by = users.id WHERE team_players.player_id = $player OR teams.created_by = $player");
         if ($result) {
             while ($row = mysql_fetch_array($result)) {
                 $res['teams'][] = array('id' => $row['id'], 'name' => $row['name'], 'manager' => $row['manager']);
@@ -79,6 +84,14 @@ class TeamFunctions {
         } else {
             return false;
         }
+    }
+    
+    public function getTeamManager($team) {
+        $result = mysql_query("SELECT created_by, player_manager FROM teams WHERE id = $team");
+        $row = mysql_fetch_array($result);
+        $res['manager'] = $row['created_by'];
+        $res['player_manager'] = $row['player_manager'];
+        return $res;
     }
     
     public function getTeamIdFromCode($code) {
