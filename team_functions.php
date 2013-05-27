@@ -22,12 +22,12 @@ class TeamFunctions {
      * Storing new team
      * returns team details
      */
-    public function storeTeam($name, $created_by, $player_manager) {
+    public function storeTeam($name, $created_by, $player_manager, $home_ground) {
         $code = substr(uniqid(rand(10,1000),false),rand(0,10),6);
         while($this->codeExists($code)) {
             $code = substr(uniqid(rand(10,1000),false),rand(0,10),6);
         }
-        $result = mysql_query("INSERT INTO teams(name, code, created_by, player_manager, created_at) VALUES('$name', '$code', '$created_by', '$player_manager', NOW())");
+        $result = mysql_query("INSERT INTO teams(name, code, created_by, player_manager, home_ground, created_at) VALUES('$name', '$code', '$created_by', '$player_manager', '$home_ground', NOW())");
         // check for successful store
         if ($result) {
             // get team details 
@@ -63,11 +63,11 @@ class TeamFunctions {
      * Gets all teams of a player
      */
     public function getPlayersTeams($res, $player) {
-        $result = mysql_query("SELECT teams.id, teams.name, teams.code, users.name as 'manager' FROM teams LEFT JOIN team_players ON teams.id=team_players.team_id
+        $result = mysql_query("SELECT teams.id, teams.name, teams.code, teams.home_ground, users.name as 'manager' FROM teams LEFT JOIN team_players ON teams.id=team_players.team_id
         INNER JOIN users on teams.created_by = users.id WHERE team_players.player_id = $player OR teams.created_by = $player");
         if ($result) {
             while ($row = mysql_fetch_array($result)) {
-                $res['teams'][] = array('id' => $row['id'], 'name' => $row['name'], 'code' => $row['code'], 'manager' => $row['manager']);
+                $res['teams'][] = array('id' => $row['id'], 'name' => $row['name'], 'code' => $row['code'], 'manager' => $row['manager'], 'home_ground' => $row["home_ground"]);
             }
         }
         if (mysql_num_rows($result) > 0) {

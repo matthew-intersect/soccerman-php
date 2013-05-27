@@ -82,6 +82,7 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
         $name = $_POST['name'];
         $created_by = $_POST['created_by'];
         $player_manager = $_POST['player_manager'];
+        $home_ground = $_POST["home_ground"];
         
         // check team doesnt already exist
         if ($db2->teamNameExists($name)) {
@@ -90,7 +91,7 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
             $response["error_msg"] = "Team name already taken";
             echo json_encode($response);
         } else {
-            $team = $db2->storeTeam($name, $created_by, $player_manager);
+            $team = $db2->storeTeam($name, $created_by, $player_manager, $home_ground);
             if ($team) {
                 // team stored successfully
                 $response["success"] = 1;
@@ -99,6 +100,7 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
                 $response["team"]["code"] = $team["code"];
                 $response["team"]["creator"] = $team["created_by"];
                 $response["team"]["creator_role"] = $team["player_manager"];
+                $response["team"]["home_ground"] = $team["home_ground"];
                 $response["team"]["created_at"] = $team["created_at"];
                 echo json_encode($response);
             } else {

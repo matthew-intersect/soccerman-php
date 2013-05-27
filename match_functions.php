@@ -22,8 +22,8 @@ class MatchFunctions {
      * Stores new match
      * returns match details
      */
-    public function storeMatch($team, $opponent, $venue, $time) {
-        $result = mysql_query("INSERT INTO matches(team, opponent, location, game_time) VALUES('$team', '$opponent', '$venue', '$time')");
+    public function storeMatch($team, $opponent, $venue, $home, $time) {
+        $result = mysql_query("INSERT INTO matches(team, opponent, location, home_away, game_time) VALUES('$team', '$opponent', '$venue', '$home', '$time')");
         if ($result) {
             $id = mysql_insert_id(); // last inserted id
             $result = mysql_query("SELECT * FROM matches WHERE id = $id");
@@ -36,12 +36,12 @@ class MatchFunctions {
     /**
      * Gets all matches for a team
      */
-    public function getMatches($team) {
+    public function getMatches($team, $res) {
         $result = mysql_query("SELECT * FROM matches WHERE team = $team");
         if ($result) {
             while ($row = mysql_fetch_array($result)) {
                 $res['matches'][] = array('id' => $row['id'], 'team' => $row['team'], 'opponent' => $row['opponent'], 
-                        'venue' => $row['location'], 'time' => $row['game_time']);
+                        'venue' => $row['location'], 'home' => $row["home_away"], 'time' => $row['game_time']);
             }
         }
         if (mysql_num_rows($result) > 0) {
