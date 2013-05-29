@@ -60,6 +60,12 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
         $attendance = $db->getAttendance($response, $match);
         echo json_encode($attendance);
     }
+    else if ($tag == 'get_player_attendance') {
+        $match = $_POST['match'];
+        $player = $_POST['player'];
+        $attendance = $db->getPlayerAttendance($match, $player, $response);
+        echo json_encode($attendance);
+    }
     else {
         echo "Invalid Request";
     }

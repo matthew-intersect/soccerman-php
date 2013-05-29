@@ -102,6 +102,19 @@ class MatchFunctions {
         }
         return $res;
     }
+    
+    public function getPlayerAttendance($match, $player, $res) {
+        $attendance = mysql_query("SELECT * FROM attendance WHERE player_id = $player and match_id = $match");
+        if ($attendance) {
+            if (mysql_num_rows($attendance) > 0) {
+                $row = mysql_fetch_array($attendance);
+                $res['attendance'] = $row['attendance'];
+                return $res;
+            }
+        }
+        $res['attendance'] = "-1";
+        return $res;
+    }
 }
 
 ?>
