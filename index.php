@@ -141,10 +141,16 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
                 echo json_encode($response);
             }
         }
-    } else if ($tag == 'players_teams') {
+    }
+    else if ($tag == 'players_teams') {
         $player = $_POST['player'];
         $teams = $db2->getPlayersTeams($response, $player);
         echo json_encode($teams);
+    }
+    else if ($tag == 'get_team_players') {
+        $team = $_POST['team'];
+        $players = $db2->getTeamPlayers($team, $response);
+        echo json_encode($players);
     }
     else if ($tag == 'get_team_manager') {
         $team = $_POST['team'];

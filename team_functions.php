@@ -75,6 +75,22 @@ class TeamFunctions {
         }
         return $res;
     }
+
+    /**
+     * Gets all players of a team
+     */ 
+    public function getTeamPlayers($team, $res) {
+        $result = mysql_query("SELECT users.id, users.name FROM users INNER JOIN team_players ON users.id = team_players.player_id WHERE team_players.team_id = $team");
+        if ($result) {
+            while ($row = mysql_fetch_array($result)) {
+                $res['players'][] = array('id' => $row['id'], 'name' => $row['name']);
+            }
+        }
+        if (mysql_num_rows($result) > 0) {
+            $res['success'] = 1;
+        }
+        return $res;
+    }
     
     public function playerInTeam($team, $player) {
         $result = mysql_query("SELECT * from team_players WHERE team_id = '$team' AND player_id = '$player'");
