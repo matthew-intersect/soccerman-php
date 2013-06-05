@@ -157,6 +157,11 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
         $manager = $db2->getTeamManager($team);
         echo json_encode($manager);
     }
+    else if ($tag == 'change_team_code') {
+        $team = $_POST['team'];
+        $code = $db2->changeTeamCode($team, $response);
+        echo json_encode($code);
+    }
     else {
         echo "Invalid Request";
     }

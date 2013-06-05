@@ -92,6 +92,22 @@ class TeamFunctions {
         return $res;
     }
     
+    /**
+     * Generate a new code for a team
+     */ 
+    public function changeTeamCode($team, $res) {
+        $code = substr(uniqid(rand(10,1000),false),rand(0,10),6);
+        while($this->codeExists($code)) {
+            $code = substr(uniqid(rand(10,1000),false),rand(0,10),6);
+        }
+        $result = mysql_query("UPDATE teams SET code = '$code' WHERE id = $team");
+        if ($result) {
+            $res['code'] = $code;
+            $res['success'] = 1;
+        }
+        return $res;
+    }
+    
     public function playerInTeam($team, $player) {
         $result = mysql_query("SELECT * from team_players WHERE team_id = '$team' AND player_id = '$player'");
         $no_of_rows = mysql_num_rows($result);
