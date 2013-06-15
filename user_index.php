@@ -1,28 +1,16 @@
 <?php
-/**
- * File to handle all API requests
- * Accepts GET and POST
- * 
- * Each request will be identified by TAG
- * Response will be JSON data
- 
-  /**
- * check for POST request 
- */
+
 if (isset($_POST['tag']) && $_POST['tag'] != '') {
     // get tag
     $tag = $_POST['tag'];
  
     // include db handler
     require_once 'user_functions.php';
-    require_once 'team_functions.php';
     $db = new UserFunctions();
-    $db2 = new TeamFunctions();
  
     // response Array
     $response = array("tag" => $tag, "success" => 0, "error" => 0);
  
-    // check for tag type
     if ($tag == 'login') {
         // Request type is check Login
         $email = $_POST['email'];
