@@ -108,6 +108,19 @@ class TeamFunctions {
         return $res;
     }
     
+    /**
+     * Removes a player from a team
+     */ 
+    public function removePlayer($team, $player) {
+        $result = mysql_query("DELETE FROM team_players WHERE team_id = '$team' AND player_id = '$player'");
+        if ($result) {
+            $res['success'] = 1;
+            mysql_query("DELETE attendance.* FROM attendance INNER JOIN matches ON matches.id = attendance.match_id INNER JOIN teams ON teams.id = matches.team
+                    WHERE teams.id = $team AND attendance.player_id = $player");
+        }
+        return $res;
+    }
+    
     public function playerInTeam($team, $player) {
         $result = mysql_query("SELECT * from team_players WHERE team_id = '$team' AND player_id = '$player'");
         $no_of_rows = mysql_num_rows($result);

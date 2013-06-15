@@ -162,6 +162,12 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
         $code = $db2->changeTeamCode($team, $response);
         echo json_encode($code);
     }
+    else if ($tag == 'remove_player') {
+        $team = $_POST['team'];
+        $player = $_POST['player'];
+        $removal = $db2->removePlayer($team, $player);
+        echo json_encode($removal);
+    }
     else {
         echo "Invalid Request";
     }

@@ -1,4 +1,4 @@
 soccerman-php
 =============
 
-php files for soccerman
+soccerman webapp and database scripts
