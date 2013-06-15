@@ -37,7 +37,7 @@ class MatchFunctions {
      * Gets all matches for a team
      */
     public function getMatches($team, $res) {
-        $result = mysql_query("SELECT * FROM matches WHERE team = $team");
+        $result = mysql_query("SELECT * FROM matches WHERE team = $team ORDER BY game_time ASC");
         if ($result) {
             while ($row = mysql_fetch_array($result)) {
                 $res['matches'][] = array('id' => $row['id'], 'team' => $row['team'], 'opponent' => $row['opponent'], 
