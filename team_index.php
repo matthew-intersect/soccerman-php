@@ -14,84 +14,26 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
     $tag = $_POST['tag'];
  
     // include db handler
-    require_once 'user_functions.php';
     require_once 'team_functions.php';
-    $db = new UserFunctions();
-    $db2 = new TeamFunctions();
+    $db = new TeamFunctions();
  
     // response Array
     $response = array("tag" => $tag, "success" => 0, "error" => 0);
  
-    // check for tag type
-    if ($tag == 'login') {
-        // Request type is check Login
-        $email = $_POST['email'];
-        $password = $_POST['password'];
- 
-        // check for user
-        $user = $db->getUserByEmailAndPassword($email, $password);
-        if ($user != false) {
-            // user found
-            // echo json with success = 1
-            $response["success"] = 1;
-            $response["id"] = $user["id"];
-            $response["user"]["name"] = $user["name"];
-            $response["user"]["email"] = $user["email"];
-            $response["user"]["created_at"] = $user["created_at"];
-            $response["user"]["updated_at"] = $user["updated_at"];
-            echo json_encode($response);
-        } else {
-            // user not found
-            // echo json with error = 1
-            $response["error"] = 1;
-            $response["error_msg"] = "Incorrect email or password!";
-            echo json_encode($response);
-        }
-    } else if ($tag == 'register') {
-        // Request type is Register new user
-        $name = $_POST['name'];
-        $email = $_POST['email'];
-        $password = $_POST['password'];
- 
-        // check if user is already existed
-        if ($db->isUserExisted($email)) {
-            // user is already existed - error response
-            $response["error"] = 2;
-            $response["error_msg"] = "User already existed";
-            echo json_encode($response);
-        } else {
-            // store user
-            $user = $db->storeUser($name, $email, $password);
-            if ($user) {
-                // user stored successfully
-                $response["success"] = 1;
-                $response["id"] = $user["id"];
-                $response["user"]["name"] = $user["name"];
-                $response["user"]["email"] = $user["email"];
-                $response["user"]["created_at"] = $user["created_at"];
-                $response["user"]["updated_at"] = $user["updated_at"];
-                echo json_encode($response);
-            } else {
-                // user failed to store
-                $response["error"] = 1;
-                $response["error_msg"] = "Error occurred in registration";
-                echo json_encode($response);
-            }
-        }
-    } else if ($tag == 'add_team') {
+    if ($tag == 'add_team') {
         $name = $_POST['name'];
         $created_by = $_POST['created_by'];
         $player_manager = $_POST['player_manager'];
         $home_ground = $_POST["home_ground"];
         
         // check team doesnt already exist
-        if ($db2->teamNameExists($name)) {
+        if ($db->teamNameExists($name)) {
             // team name is already taken - error response
             $response["error"] = 1;
             $response["error_msg"] = "Team name already taken";
             echo json_encode($response);
         } else {
-            $team = $db2->storeTeam($name, $created_by, $player_manager, $home_ground);
+            $team = $db->storeTeam($name, $created_by, $player_manager, $home_ground);
             if ($team) {
                 // team stored successfully
                 $response["success"] = 1;
@@ -114,20 +56,20 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
         $code = $_POST['code'];
         $player = $_POST['player'];
         
-        if (!$db2->codeExists($code)) {
+        if (!$db->codeExists($code)) {
             // team code doesnt exist - error response
             $response["error"] = 1;
             $response["error_msg"] = "Team with entered code doesn't exist";
             echo json_encode($response);
         }
-        else if ($db2->playerInTeam($team, $player)) {
+        else if ($db->playerInTeam($team, $player)) {
             // player already in team - error response
             $response["error"] = 2;
             $response["error_msg"] = "Player already in team";
             echo json_encode($response);
         }
         else {
-            $team_player = $db2->joinTeam($code, $player);
+            $team_player = $db->joinTeam($code, $player);
             if ($team_player) {
                 // player joined successfully
                 $response["success"] = 1;
@@ -144,28 +86,28 @@ if (isset($_POST['tag']) && $_POST['tag'] != '') {
     }
     else if ($tag == 'players_teams') {
         $player = $_POST['player'];
-        $teams = $db2->getPlayersTeams($response, $player);
+        $teams = $db->getPlayersTeams($response, $player);
         echo json_encode($teams);
     }
     else if ($tag == 'get_team_players') {
         $team = $_POST['team'];
-        $players = $db2->getTeamPlayers($team, $response);
+        $players = $db->getTeamPlayers($team, $response);
         echo json_encode($players);
     }
     else if ($tag == 'get_team_manager') {
         $team = $_POST['team'];
-        $manager = $db2->getTeamManager($team);
+        $manager = $db->getTeamManager($team);
         echo json_encode($manager);
     }
     else if ($tag == 'change_team_code') {
         $team = $_POST['team'];
-        $code = $db2->changeTeamCode($team, $response);
+        $code = $db->changeTeamCode($team, $response);
         echo json_encode($code);
     }
     else if ($tag == 'remove_player') {
         $team = $_POST['team'];
         $player = $_POST['player'];
-        $removal = $db2->removePlayer($team, $player);
+        $removal = $db->removePlayer($team, $player);
         echo json_encode($removal);
     }
     else {
