@@ -40,7 +40,9 @@ if(isset($_POST['submit']))
 
 <body OnLoad="document.login.email.focus();">
 	<center>
-	<img src="images/banner.png">
+	<a href="index.php">
+		<img src="images/banner.png">
+	</a>
 	<div id='loginbox'>
 		<form name="login" type='index.php' method='POST'>
 		<?php
@@ -50,7 +52,7 @@ if(isset($_POST['submit']))
 			echo"<font color='red'>";
 			foreach($_SESSION['ERRMSG_ARR'] as $key=>$value)
 			{
-				echo"-$value<br>";
+				echo"$value<br>";
 			}
 			echo"</font>";
 			unset($_SESSION['ERRMSG_ARR']);

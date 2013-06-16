@@ -21,7 +21,9 @@ if(isset($_SESSION['loggedin']))
 
 <body>
 	<center>
-	<img src="images/banner.png">
+	<a href="index.php">
+		<img src="images/banner.png">
+	</a>
 	<div id="registerbox">
 		<form type='register.php' method='POST'>
 		<?php
