@@ -5,7 +5,7 @@ $db = new UserFunctions();
 
 if(isset($_SESSION['loggedin']))
 {
-	header("Location: ./home.php");
+	header("location: ./home.php");
 	die();
 }
 if(isset($_POST['submit']))
@@ -20,14 +20,14 @@ if(isset($_POST['submit']))
 		$_SESSION['loggedin'] = "YES"; // Set it so the user is logged in!
 		$_SESSION['name'] = $user["name"]; // Make it so the username can be called by $_SESSION['name']
 		$_SESSION['id'] = $user["id"];
-		header("Location: ./home.php");
+		header("location: ./home.php");
 	}
 	else {
 		$errmsg_arr = array();
 		$errmsg_arr[] = 'Username or password were incorrect';
 		$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
 		session_write_close();
-		header("Location: ./index.php");
+		header("location: ./index.php");
 	}
 }
 ?>
@@ -56,16 +56,15 @@ if(isset($_POST['submit']))
 			unset($_SESSION['ERRMSG_ARR']);
 		}
 		?>
-		<input type='text' name='email' class="form-input" placeholder="Email" required><br>
+		<input type='text' name='email' class="form-input" placeholder="Email" required>
+		<br><br>
+		<input type='password' name='password' class="form-input" placeholder="Password" required>
 		<br>
-		<input type='password' name='password' class="form-input" placeholder="Password" required><br>
 		<input type='submit' name='submit' value='Login'>
-		<br>
-		<br>
-		<br>
+		<br><br><br>
 		Don't have an account? Register now!
 		<br>
-		<input type='button' onclick="location.href='register.php'" name='register' value='Register'><br>
+		<input type='button' onclick="location.href='register.php'" name='register' value='Register'>
 		</center>
 		</form> 
 	</div>
