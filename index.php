@@ -1,3 +1,37 @@
+<?php
+session_start();
+require_once 'user_functions.php';
+$db = new UserFunctions();
+
+if(isset($_SESSION['loggedin']))
+{
+	header("Location: ./home.php");
+	die();
+}
+if(isset($_POST['submit']))
+{
+	$email = mysql_real_escape_string($_POST['email']);
+	$password = mysql_real_escape_string($_POST['password']); 
+	
+	$user = $db->getUserByEmailAndPassword($email, $password);
+
+	if($user != false) {
+    	// user found
+		$_SESSION['loggedin'] = "YES"; // Set it so the user is logged in!
+		$_SESSION['name'] = $user["name"]; // Make it so the username can be called by $_SESSION['name']
+		$_SESSION['id'] = $user["id"];
+		header("Location: ./home.php");
+	}
+	else {
+		$errmsg_arr = array();
+		$errmsg_arr[] = 'Username or password were incorrect';
+		$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
+		session_write_close();
+		header("Location: ./index.php");
+	}
+}
+?>
+
 <html>
 <head>
 	<title>soccerman</title>
