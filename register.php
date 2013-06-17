@@ -9,7 +9,57 @@ if(isset($_SESSION['loggedin']))
 	die();
 }
 
+if(isset($_POST['createAccount']))
+{
+	$email = mysql_real_escape_string($_POST['email']);
+	$name = mysql_real_escape_string($_POST['name']); 
+	$pass = mysql_real_escape_string($_POST['password']);
+	$pass2 = mysql_real_escape_string($_POST['confirmPassword']);
 
+	$errmsg_arr = array();
+	if($email == '' || $name == '' || $pass == '' || $pass2 == '')
+	{
+		$errmsg_arr[] = 'Some fields are blank';
+		$errflag = true;
+	}
+   
+	if($pass != $pass2)
+	{
+		$errmsg_arr[] = 'The passwords do not match';
+		$errflag = true;
+	}
+
+	if($db->isUserExisted($email))
+	{
+		$errmsg_arr[] = 'User with given email already exists';
+		$errflag = true;
+	}
+	
+	if($errflag) 
+	{
+		$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
+		session_write_close();
+		header("location: ./register.php");
+	}
+	else
+	{
+		$user = $db->storeUser($name, $email, $pass);
+		if ($user)
+		{
+			$_SESSION['loggedin'] = "YES"; // Set it so the user is logged in!
+			$_SESSION['name'] = $name; // Make it so the username can be called by $_SESSION['name']
+			$_SESSION['id'] = $user["id"];
+			header("location: ./home.php");
+		}
+		else
+		{
+			$errmsg_arr[] = 'Error occurred in registration. Try again later';
+			$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
+			session_write_close();
+			header("location: ./index.php");
+		}
+	}
+}
 
 ?>
 
@@ -27,7 +77,6 @@ if(isset($_SESSION['loggedin']))
 	<div id="registerbox">
 		<form type='register.php' method='POST'>
 		<?php
-		session_start();
 		if (isset($_SESSION['ERRMSG_ARR']) && !empty($_SESSION['ERRMSG_ARR']))
 		{
 			echo"<font color='red'>";
@@ -45,7 +94,7 @@ if(isset($_SESSION['loggedin']))
 		<br><br>
 		<input type='password' name='password' class="form-input" placeholder="Password" required>
 		<br><br>
-		<input type='password' name='retypePassword' class="form-input" placeholder="Confirm Password" required>
+		<input type='password' name='confirmPassword' class="form-input" placeholder="Confirm Password" required>
 		<br><br>
 		<input type='submit' name='createAccount' value='Create Account'>
 		<input type='button' onclick="location.href='index.php'" name='cancel' value='Cancel'><br>

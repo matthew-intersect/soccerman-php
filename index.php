@@ -8,6 +8,7 @@ if(isset($_SESSION['loggedin']))
 	header("location: ./home.php");
 	die();
 }
+
 if(isset($_POST['submit']))
 {
 	$email = mysql_real_escape_string($_POST['email']);
@@ -15,14 +16,15 @@ if(isset($_POST['submit']))
 	
 	$user = $db->getUserByEmailAndPassword($email, $password);
 
-	if($user != false) {
-    	// user found
+	if($user != false)
+	{
 		$_SESSION['loggedin'] = "YES"; // Set it so the user is logged in!
 		$_SESSION['name'] = $user["name"]; // Make it so the username can be called by $_SESSION['name']
 		$_SESSION['id'] = $user["id"];
 		header("location: ./home.php");
 	}
-	else {
+	else
+	{
 		$errmsg_arr = array();
 		$errmsg_arr[] = 'Username or password were incorrect';
 		$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
@@ -46,7 +48,6 @@ if(isset($_POST['submit']))
 	<div id='loginbox'>
 		<form name="login" type='index.php' method='POST'>
 		<?php
-		//session_start();
 		if (isset($_SESSION['ERRMSG_ARR']) && !empty($_SESSION['ERRMSG_ARR']))
 		{
 			echo"<font color='red'>";
