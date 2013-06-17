@@ -8,7 +8,8 @@ if(!isset($_SESSION['loggedin']))
 
 $action = $_GET['action'];
 
-if ($action == 'logout') {
+if($action == 'logout')
+{
 	$_SESSION = array();
     session_destroy();
     header("location: ./index.php");

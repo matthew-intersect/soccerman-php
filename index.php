@@ -48,7 +48,7 @@ if(isset($_POST['submit']))
 	<div id='loginbox'>
 		<form name="login" type='index.php' method='POST'>
 		<?php
-		if (isset($_SESSION['ERRMSG_ARR']) && !empty($_SESSION['ERRMSG_ARR']))
+		if(isset($_SESSION['ERRMSG_ARR']) && !empty($_SESSION['ERRMSG_ARR']))
 		{
 			echo"<font color='red'>";
 			foreach($_SESSION['ERRMSG_ARR'] as $key=>$value)

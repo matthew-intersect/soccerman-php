@@ -44,7 +44,7 @@ if(isset($_POST['createAccount']))
 	else
 	{
 		$user = $db->storeUser($name, $email, $pass);
-		if ($user)
+		if($user)
 		{
 			$_SESSION['loggedin'] = "YES"; // Set it so the user is logged in!
 			$_SESSION['name'] = $name; // Make it so the username can be called by $_SESSION['name']
@@ -77,7 +77,7 @@ if(isset($_POST['createAccount']))
 	<div id="registerbox">
 		<form type='register.php' method='POST'>
 		<?php
-		if (isset($_SESSION['ERRMSG_ARR']) && !empty($_SESSION['ERRMSG_ARR']))
+		if(isset($_SESSION['ERRMSG_ARR']) && !empty($_SESSION['ERRMSG_ARR']))
 		{
 			echo"<font color='red'>";
 			foreach($_SESSION['ERRMSG_ARR'] as $key=>$value)
