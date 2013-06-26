@@ -18,8 +18,9 @@ if($action == 'logout')
 
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" HREF="main.css">
-	<title>ChatCino - Home</title>
+	<link rel="stylesheet" type="text/css" HREF="stylesheets/main.css">
+	<script src="javascript/jquery.js"></script>
+	<title>soccerman | Home</title>
 </head>
 <body>
 	<div id=logoutbox>
@@ -33,5 +34,11 @@ if($action == 'logout')
 			<a href="home.php?action=logout">Log out</a>
 		</p>
 	</div>
+	<center>
+	<a href="index.php">
+		<img src="images/banner.png">
+	</a><br><br>
+	<a href="teams.php">My Teams</a>
+	</center>
 </body
 </html>
