@@ -51,7 +51,9 @@ if($action == 'logout')
 				$id = $teams['teams'][$i]['id'];
 				$name = $teams['teams'][$i]['name'];
 				$manager = $teams['teams'][$i]['manager'];
-				echo"<tr><td>$name</td><td>$manager</td><td><a href='teams/players.php?id=$id'>View Players</a> <a href='teams/matches.php?id=$id'>View Matches</a></td></tr>";
+				echo"<tr><td>$name</td><td>$manager</td><td><a href='teams/players.php?id=$id'>
+					<img src='images/player.png'></a> <a href='teams/matches.php?id=$id'>
+					<img src='images/matches.png'></a></td></tr>";
 			}
 			echo"</table>";
 		}
