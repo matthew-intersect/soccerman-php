@@ -35,9 +35,7 @@ if($action == 'logout')
 		</p>
 	</div>
 	<center>
-	<a href="index.php">
-		<img src="images/banner.png">
-	</a><br><br>
+	<a href="index.php"><img src="images/banner.png"></a><br><br>
 	<a href="teams.php">My Teams</a>
 	</center>
 </body

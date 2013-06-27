@@ -48,9 +48,10 @@ if($action == 'logout')
 			echo"<table border='1' cellpadding='10'><tr><td><b>Team</td><td><b>Manager</td><td><b>Actions</td></tr>";
 			for($i=0; $i<count($teams['teams']); $i++)
 			{
+				$id = $teams['teams'][$i]['id'];
 				$name = $teams['teams'][$i]['name'];
 				$manager = $teams['teams'][$i]['manager'];
-				echo"<tr><td>$name</td><td>$manager</td><td></td></tr>";
+				echo"<tr><td>$name</td><td>$manager</td><td><a href='teams/players.php?id=$id'>View Players</a></td></tr>";
 			}
 			echo"</table>";
 		}
