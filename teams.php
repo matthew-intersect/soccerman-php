@@ -28,7 +28,6 @@ if($action == 'logout')
 	<div id=logoutbox>
 		<p align="right">
 			<?php
-				session_start();
 				echo('Logged in as ');
 				echo($_SESSION['name']);
 				echo(' |');

@@ -18,8 +18,8 @@ if(isset($_POST['submit']))
 
 	if($user != false)
 	{
-		$_SESSION['loggedin'] = "YES"; // Set it so the user is logged in!
-		$_SESSION['name'] = $user["name"]; // Make it so the username can be called by $_SESSION['name']
+		$_SESSION['loggedin'] = "YES";
+		$_SESSION['name'] = $user["name"];
 		$_SESSION['id'] = $user["id"];
 		header("location: ./home.php");
 	}
