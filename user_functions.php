@@ -61,6 +61,22 @@ class UserFunctions
             return false;
         }
     }
+
+    /**
+     * Change a user's password
+     */
+    public function changePassword($id, $password)
+    {
+        $hash = $this->hashSSHA($password);
+        $encrypted_password = $hash["encrypted"];
+        $salt = $hash["salt"];
+        $result = mysql_query("UPDATE users SET encrypted_password = '$encrypted_password', 
+            salt = '$salt' WHERE id = $id");
+        if($result)
+            return true;
+        else
+            return false;
+    }
  
     /**
      * Check user is existed or not

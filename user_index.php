@@ -64,6 +64,23 @@ if(isset($_POST['tag']) && $_POST['tag'] != '')
             }
         }
     }
+    else if($tag == 'change_password')
+    {
+        $id = $_POST['id'];
+        $password = $_POST['password'];
+
+        $result = $db->changePassword($id, $password);
+        if($result)
+        {
+            $response["success"] = 1;
+        }
+        else
+        {
+            $response["error"] = 1;
+            $response["error_msg"] = "Error occurred while changing password";
+        }
+        echo json_encode($response);
+    }
     else
     {
         echo "Invalid Request";
